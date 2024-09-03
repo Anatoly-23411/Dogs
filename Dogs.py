@@ -1,12 +1,31 @@
-from cProfile import label
+
 from tkinter import *
+from tkinter import messagebox as mb
 import requests
 from PIL import Image, ImageTk
 from io import BytesIO
 
+from bottle import response
 from pygame.examples.cursors import image
-from pygame.examples.playmus import Window
-from setuptools.windows_support import windows_only
+
+
+def show_image():
+    image_url = get_dog_image()
+    if image_url:
+        try:
+            response = requests.get(image_url, stream=True)
+            response.raise_for_status()
+            img.data = BytesIO(response.content)
+            img = Image.open(img.data)
+            img.thumbnail(300, 300)
+            label.config(image=img)
+            label.image = img
+        except Exception as e:
+            mb.showerror("Ошибка", f"Возникла ошибка {e}")
+
+
+
+
 
 window = Tk()
 window.title("Картинки с собачками")
@@ -17,7 +36,8 @@ label = Label()
 label.pack(pady=10)
 
 
-button = Button(text="Загрузить изображение", command=show-image)
+button = Button(text="Загрузить изображение", command=show_image)
 button.pack(pady=10)
 
-window.split()
+window.mainloop()
+
