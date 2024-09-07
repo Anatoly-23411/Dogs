@@ -6,6 +6,9 @@ import requests
 from PIL import Image, ImageTk
 from io import BytesIO
 
+# from PIL.ImageOps import expand
+
+
 # from pygame.examples.cursors import image
 
 
@@ -35,10 +38,13 @@ def show_image():
             img.thumbnail(img_size)
             img = ImageTk.PhotoImage(img)
 
-            new_window = Toplevel(window)
-            new_window.title("Случайное изображение")
-            lb = ttk.Label(new_window, image=img)
-            lb.pack()
+            # new_window = Toplevel(window)
+            # new_window.title("Случайное изображение")
+            tab = ttk.Frame(notebook)
+            notebook.add(tab, text=f"Картинка № {notebook.index('end') + 1}")
+
+            lb = ttk.Label(tab, image=img) # меняем new_window на  tab
+            lb.pack(padx=10, pady=10) # добавляем отступы для х и у
            # label.config(image=img)   # эта строчка не нужна
             lb.image = img  # переименуем из label в lb
         except Exception as e:
@@ -78,6 +84,12 @@ height_label.pack(side="left", padx=(10, 0))
 height_spinbox = ttk.Spinbox(from_=200, to=500, increment=50, width=5)
 height_spinbox.pack(side="left", padx=(0, 10))
 
+
+top_level_window = Toplevel(window)
+top_level_window.title("Изображения собачек")
+
+notebook = ttk.Notebook(top_level_window)
+notebook.pack(expand=True, fill="both", padx=10, pady=10)
 
 window.mainloop()
 
